@@ -1,0 +1,56 @@
+# DO NOT DELETE OR EDIT THIS FILE
+name: Assignment autograding
+on:
+  push:
+    paths:
+      - '.github/**'
+      - 'src/**'
+      - '*.gradle'
+      - 'gradle.properties'
+jobs:
+  build:
+    name: "Run prepared & submitted tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 11
+          architecture: x64
+      - name: Make gradlew executable
+        run: chmod +x ${{ github.workspace }}/gradlew
+        shell: bash
+      - name: Move autograding Gradle build files
+        run: mv ${{ github.workspace }}/.github/autotest/test.gradle ${{ github.workspace }}/
+        shell: bash
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Run prepared tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test --build-file test.gradle
+      - name: Upload prepared tests report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: prepared-tests
+          path: ${{ github.workspace }}/build/reports/tests/test/**
+      - name: Clean prepared tests
+        run: rm -fR ${{ github.workspace }}/build/reports/tests/test/
+        if: always()
+        shell: bash
+      - name: Run submitted tests
+        uses: gradle/gradle-build-action@v2
+        if: always()
+        with:
+          arguments: test
+      - name: Upload submitted tests report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: submitted-tests
+          path: ${{ github.workspace }}/build/reports/tests/test/**
+          if-no-files-found: ignore

@@ -1,0 +1,12 @@
+remote_theme: nickbenn-workshop/just-the-docs
+
+title: Rating Analyzer Implementation
+
+aux_links_new_tab: true
+aux_links:
+  Javadocs: "https://nickbenn-workshop.github.io/rating-analyzer-spec/api/"
+  Template: "https://github.com/nickbenn-workshop/rating-analyzer/"
+
+deadline:
+  submission: "7:00 AM PDT, on Friday, 5 August, 2022"
+  feedback: "7:00 AM PDT, on Tuesday, 9 August, 2022"
