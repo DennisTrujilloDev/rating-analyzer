@@ -40,13 +40,13 @@ public class AnalyzerTest {
   void newInstanceTest() {
     try {
       RatingAnalyzer.newInstance(null);
-      fail();
+      fail("The array cannot be null.");
     } catch (AnalyzerConfigurationException e) {
       assertInstanceOf(IllegalArgumentException.class, e.getCause());
     }
     try {
       RatingAnalyzer.newInstance(new int[]{});
-      fail();
+      fail("The array cannot be empty.");
     } catch (AnalyzerConfigurationException e) {
       assertInstanceOf(IllegalArgumentException.class, e.getCause());
     }

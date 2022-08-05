@@ -15,18 +15,16 @@ public class Analyzer implements RatingAnalyzer {
   private final int[] ratings;
 
   public Analyzer(int[] ratingsArray) throws AnalyzerConfigurationException {
-    this.ratings = ratingsArray;
     if (ratingsArray == null || ratingsArray.length == 0) {
-      throw new IllegalArgumentException("The array cannot be null or empty. Please try again!");
+      throw new IllegalArgumentException("Array cannot be null or empty.");
+    }else {
+      this.ratings = ratingsArray;
     }
   }
 
   @Override
   public int[] mode() {
-    int maxNumVal;
-    int maxNumItself;
     Map<Integer, Integer> mapHere = new HashMap<>();
-    List<Integer> modeVals = new ArrayList<>();
     for (int value : ratings) {
       Integer keysValue = mapHere.get(value);
       if (keysValue == null) {
@@ -35,7 +33,10 @@ public class Analyzer implements RatingAnalyzer {
         mapHere.put(value, keysValue + 1);
       }
     }
+    List<Integer> modeVals = new ArrayList<>();
     int maxValueInMap = Collections.max(mapHere.values());
+    int maxNumVal;
+    int maxNumItself;
     for (Entry<Integer, Integer> pair : mapHere.entrySet()) {
       maxNumVal = pair.getValue();
       maxNumItself = pair.getKey();
@@ -45,7 +46,6 @@ public class Analyzer implements RatingAnalyzer {
     }
     return modeVals.stream().mapToInt(Integer::intValue)
         .sorted().toArray();
-
   }
 
   @Override
@@ -71,6 +71,5 @@ public class Analyzer implements RatingAnalyzer {
     }
     return sum / ratings.length;
   }
-
 }
 
