@@ -22,12 +22,29 @@ public class Analyzer implements RatingAnalyzer {
   }
 
   @Override
-  public double mean() {
-    double sum = 0;
-    for (int elementInRatings : ratings) {
-      sum += elementInRatings;
+  public int[] mode() {
+    int maxNumVal;
+    int maxNumItself;
+    Map<Integer, Integer> mapHere = new HashMap<>();
+    List<Integer> modeVals = new ArrayList<>();
+    for (int value : ratings) {
+      Integer keysValue = mapHere.get(value);
+      if (keysValue == null) {
+        mapHere.put(value, 0);
+      } else {
+        mapHere.put(value, keysValue + 1);
+      }
     }
-    return sum / ratings.length;
+    int maxValueInMap = Collections.max(mapHere.values());
+    for (Entry<Integer, Integer> pair : mapHere.entrySet()) {
+      maxNumVal = pair.getValue();
+      maxNumItself = pair.getKey();
+      if (maxNumVal == maxValueInMap) {
+        modeVals.add(maxNumItself);
+      }
+    }
+    return modeVals.stream().mapToInt(Integer::intValue)
+        .sorted().toArray();
 
   }
 
@@ -47,33 +64,12 @@ public class Analyzer implements RatingAnalyzer {
   }
 
   @Override
-  public int[] mode() {
-    int maxNumVal;
-    int maxNumItself;
-    Map<Integer, Integer> mapHere = new HashMap<>();
-    List<Integer> modeVals = new ArrayList<>();
-
-    for (int value : ratings) {
-      Integer keysValue = mapHere.get(value);
-      if (keysValue == null) {
-        mapHere.put(value, 0);
-      } else {
-        mapHere.put(value, keysValue + 1);
-      }
+  public double mean() {
+    double sum = 0;
+    for (int elementInRatings : ratings) {
+      sum += elementInRatings;
     }
-
-    int maxValueInMap = Collections.max(mapHere.values());
-    for (Entry<Integer, Integer> pair : mapHere.entrySet()) {
-      maxNumVal = pair.getValue();
-      maxNumItself = pair.getKey();
-      if (maxNumVal == maxValueInMap) {
-        modeVals.add(maxNumItself);
-      }
-    }
-
-    return modeVals.stream().mapToInt(Integer::intValue)
-        .sorted().toArray();
-
+    return sum / ratings.length;
   }
 
 }
