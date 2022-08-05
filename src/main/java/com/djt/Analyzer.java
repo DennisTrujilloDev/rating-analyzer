@@ -16,7 +16,7 @@ public class Analyzer implements RatingAnalyzer {
 
   public Analyzer(int[] ratingsArray) throws AnalyzerConfigurationException {
     if (ratingsArray == null || ratingsArray.length == 0) {
-      throw new IllegalArgumentException("Array cannot be null or empty.");
+      throw new IllegalArgumentException("Array cannot be null or empty. Sorry!");
     }else {
       this.ratings = ratingsArray;
     }
